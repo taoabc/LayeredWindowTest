@@ -47,7 +47,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 
   bkgwnd.Create(NULL);
-  //bkgwnd.ShowWindow(SW_SHOW);
+  bkgwnd.ShowWindow(SW_SHOW);
 
 
   InitMainWindow();
@@ -62,6 +62,8 @@ LRESULT CMainDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 	ATLASSERT(pLoop != NULL);
 	pLoop->RemoveMessageFilter(this);
 	pLoop->RemoveIdleHandler(this);
+
+  bkgwnd.DestroyWindow();
 
 	return 0;
 }
