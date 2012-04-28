@@ -1,6 +1,13 @@
+# useless file
+
 LayeredWindow.suo
 LayeredWindow.sdf
 LayeredWindow.opensdf
 *.aps
 *.user
 ipch
+
+#intermediate folder
+
+LayeredWindow/Debug
+LayeredWindow/Release

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "BkgWindow.h"
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 		public CMessageFilter, public CIdleHandler
 {
@@ -36,4 +37,8 @@ public:
 	LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 	void CloseDialog(int nVal);
+private:
+  void InitMainWindow(void);
+
+  BkgWindow bkgwnd;
 };

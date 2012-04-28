@@ -79,6 +79,13 @@ BEGIN
     PUSHBUTTON      "&About",ID_APP_ABOUT,130,77,50,14
 END
 
+IDD_BKG_WINDOW DIALOGEX 0, 0, 195, 127
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    LTEXT           "TODO: layout property page",IDC_STATIC,53,59,90,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -102,6 +109,14 @@ BEGIN
         RIGHTMARGIN, 180
         TOPMARGIN, 7
         BOTTOMMARGIN, 91
+    END
+
+    IDD_BKG_WINDOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 120
     END
 END
 #endif    // APSTUDIO_INVOKED
