@@ -7,7 +7,6 @@
 #define ULT_TRAY_H_
 
 #include <string>
-#include <ShellAPI.h>
 
 namespace ult {
 
