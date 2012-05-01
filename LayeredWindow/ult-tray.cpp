@@ -32,7 +32,7 @@ bool Tray::Create( HWND hwnd, UINT uid, UINT ucallback_msg, HICON htray_icon, wc
   return true;
 }
 
-bool Tray::SetBallonInfo( wchar_t* info_title, wchar_t* info, UINT timeout )
+bool Tray::ShowBallonInfo( wchar_t* info_title, wchar_t* info, UINT timeout )
 {
   if (5 > shell_major_version_) {
     return false;
@@ -43,7 +43,8 @@ bool Tray::SetBallonInfo( wchar_t* info_title, wchar_t* info, UINT timeout )
   wcscpy_s(notify_icon_data_.szInfoTitle, sizeof(notify_icon_data_.szInfoTitle)/sizeof(wchar_t),
       info_title);
   wcscpy_s(notify_icon_data_.szInfo, sizeof(notify_icon_data_.szInfo)/sizeof(wchar_t),
-      info);
+    info);
+  Shell_NotifyIcon(NIM_MODIFY, &notify_icon_data_);
   Shell_NotifyIcon(NIM_MODIFY, &notify_icon_data_);
   return true;
 }
