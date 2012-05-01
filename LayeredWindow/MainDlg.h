@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "BkgWindow.h"
+#include "FrgWindow.h"
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 		public CMessageFilter, public CIdleHandler
 {
@@ -20,6 +20,9 @@ public:
 	BEGIN_MSG_MAP(CMainDlg)
 		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+    MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd)
+    MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
+    MESSAGE_HANDLER(WM_MOVE, OnMove)
 		COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
 		COMMAND_ID_HANDLER(IDOK, OnOK)
 		COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
@@ -38,7 +41,13 @@ public:
 
 	void CloseDialog(int nVal);
 private:
+  LRESULT OnEraseBkgnd(UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled);
+  LRESULT OnLButtonDown(UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled);
+  LRESULT OnMove(UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled);
+private:
   void InitMainWindow(void);
+  void SetTransparent(void);
+  void SetLayered(void);
 
-  BkgWindow bkgwnd;
+  FrgWindow frgwnd;
 };

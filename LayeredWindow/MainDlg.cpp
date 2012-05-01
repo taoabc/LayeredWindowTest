@@ -45,12 +45,17 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 	UIAddChildWindowContainer(m_hWnd);
 
+  //bkgwnd.CreateEx(m_hWnd);
+  //bkgwnd.ShowWindow(SW_SHOW);
 
-  bkgwnd.Create(NULL);
-  bkgwnd.ShowWindow(SW_SHOW);
+  //SetParent(bkgwnd.m_hWnd);
 
-
+  SetLayered();
   InitMainWindow();
+  //SetTransparent();
+
+  frgwnd.CreateEx(m_hWnd);
+  frgwnd.ShowWindow(SW_SHOW);
 
 	return TRUE;
 }
@@ -63,7 +68,7 @@ LRESULT CMainDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 	pLoop->RemoveMessageFilter(this);
 	pLoop->RemoveIdleHandler(this);
 
-  bkgwnd.DestroyWindow();
+  //bkgwnd.DestroyWindow();
 
 	return 0;
 }
@@ -116,10 +121,6 @@ void PreMultiply( CImage& image )
 
 void CMainDlg::InitMainWindow( void )
 {
-  //ÉèÖÃÎª²ã´°¿Ú
-  LONG wndLong = GetWindowLong(GWL_EXSTYLE);
-  wndLong |= WS_EX_LAYERED;
-  SetWindowLong(GWL_EXSTYLE, wndLong);
   HDC hWndDC = GetDC();
   HDC hMemDC = CreateCompatibleDC(hWndDC);
   CImage image;
@@ -145,4 +146,59 @@ void CMainDlg::InitMainWindow( void )
   bool bRet = UpdateLayeredWindow(m_hWnd, NULL, &leftTop, &wndSize, hMemDC, &ptDC,
     0, &bf, ULW_ALPHA);
 
+}
+
+void CMainDlg::SetTransparent( void )
+{
+  SetLayeredWindowAttributes(m_hWnd, RGB(255, 0, 255), 0, LWA_COLORKEY);
+}
+
+void CMainDlg::SetLayered( void )
+{
+  LONG wndlong = GetWindowLong(GWL_EXSTYLE);
+  wndlong |= WS_EX_LAYERED;
+  SetWindowLong(GWL_EXSTYLE, wndlong);
+}
+
+LRESULT CMainDlg::OnEraseBkgnd( UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled )
+{
+  CDCHandle dc((HDC)wparam);
+  RECT rc;
+  GetClientRect(&rc);
+  HBRUSH hbrush = CreateSolidBrush(RGB(255, 0, 255));
+  dc.FillRect(&rc, hbrush);
+  return 1;
+}
+//
+//LRESULT CMainDlg::OnBkgWindowMove( UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled )
+//{
+//  RECT rc;
+//  rc.left = LOWORD(wparam);
+//  rc.top = HIWORD(wparam);
+//  rc.right = LOWORD(lparam);
+//  rc.bottom = HIWORD(lparam);
+//  MoveWindow(&rc);
+//  //SetWindowPos(bkgwnd.m_hWnd, &rc, SWP_SHOWWINDOW);
+//  return 0;
+//}
+
+LRESULT CMainDlg::OnLButtonDown( UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled )
+{
+  if (MK_LBUTTON == wparam) {
+    int y = GET_Y_LPARAM(lparam);
+    if (30 > y) {
+      PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, lparam);
+    }
+  }
+  return 0;
+}
+
+LRESULT CMainDlg::OnMove( UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled )
+{
+  RECT rc;
+  GetWindowRect(&rc);
+  if (frgwnd.IsWindow()) {
+    frgwnd.MoveWindow(&rc);
+  }
+  return 0;
 }
