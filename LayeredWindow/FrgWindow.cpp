@@ -35,7 +35,7 @@ LRESULT FrgWindow::OnCreate( UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhan
   HICON htray_icon = (HICON)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MAINFRAME),
       IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
   tray_.Create(m_hWnd, IDC_TRAY, UM_TRAY, htray_icon, L"asdf");
-  tray_.ShowBallonInfo(L"kjh", L"this is 32", 2*1000);
+  tray_.ShowBallonInfo(L"迅雷游戏盒子", L"当前下载进度 100%", 2*1000);
 
   return 0;
 }
