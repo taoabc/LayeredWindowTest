@@ -22,14 +22,14 @@ Tray::~Tray( void )
 bool Tray::Create( HWND hwnd, UINT uid, UINT ucallback_msg, HICON htray_icon, wchar_t* sztip )
 {
   notify_icon_data_.cbSize = GetNOTIFYICONDATASizeForOS();
-  notify_icon_data_.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
   notify_icon_data_.hWnd = hwnd;
   notify_icon_data_.uID = uid;
   notify_icon_data_.uCallbackMessage = ucallback_msg;
   notify_icon_data_.hIcon = htray_icon;
   wcscpy_s(notify_icon_data_.szTip, sizeof(notify_icon_data_.szTip)/sizeof(wchar_t), sztip);
 
-  Shell_NotifyIcon(NIM_ADD, &notify_icon_data_);
+  AddTrayIcon();
+
   return true;
 }
 
@@ -38,13 +38,19 @@ bool Tray::ShowBallonInfo( wchar_t* info_title, wchar_t* info, UINT timeout )
   if (5 > shell_major_version_) {
     return false;
   }
-  notify_icon_data_.uFlags |= NIF_INFO;
   notify_icon_data_.dwInfoFlags = NIIF_USER;
   notify_icon_data_.uTimeout = timeout;
   wcscpy_s(notify_icon_data_.szInfoTitle, sizeof(notify_icon_data_.szInfoTitle)/sizeof(wchar_t),
       info_title);
   wcscpy_s(notify_icon_data_.szInfo, sizeof(notify_icon_data_.szInfo)/sizeof(wchar_t),
     info);
+  ShowBallonInfo();
+  return true;
+}
+
+bool Tray::ShowBallonInfo( void )
+{
+  notify_icon_data_.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_INFO;
   Shell_NotifyIcon(NIM_MODIFY, &notify_icon_data_);
   return true;
 }
@@ -90,6 +96,13 @@ DWORD Tray::GetNOTIFYICONDATASizeForOS( void )
   } else {
     return sizeof (NOTIFYICONDATA);
   }
+}
+
+bool Tray::AddTrayIcon( void )
+{
+  notify_icon_data_.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+  Shell_NotifyIcon(NIM_ADD, &notify_icon_data_);
+  return true;
 }
 
 }

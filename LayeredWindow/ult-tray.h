@@ -16,7 +16,9 @@ public:
   ~Tray(void);
 
   bool Create(HWND hwnd, UINT uid, UINT ucallback_msg, HICON htray_icon, wchar_t* sztip);
+  bool AddTrayIcon(void);
   bool ShowBallonInfo(wchar_t* info_title, wchar_t* info, UINT timeout);
+  bool ShowBallonInfo(void);
 
 private:
   DWORD GetShellVersion(void);
