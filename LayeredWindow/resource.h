@@ -7,6 +7,8 @@
 #define IDR_MAINFRAME                   128
 #define IDD_MAINDLG                     129
 #define IDC_BUTTON1                     1001
+#define IDC_BUTTON_CLOSE                1002
+#define IDC_TRAY                        1003
 
 // Next default values for new objects
 // 

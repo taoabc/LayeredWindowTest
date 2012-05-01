@@ -11,6 +11,8 @@
 #define _WIN32_IE	0x0501
 #define _RICHEDIT_VER	0x0200
 
+//#define NTDDI_VERSION NTDDI_WIN7
+
 #include <atlbase.h>
 #include <atlapp.h>
 

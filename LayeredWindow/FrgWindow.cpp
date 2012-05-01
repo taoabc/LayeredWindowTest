@@ -2,6 +2,9 @@
 #include "FrgWindow.h"
 
 
+const COLORREF FrgWindow::trans_color_ = RGB(255, 0, 255);
+
+
 FrgWindow::FrgWindow(void)
 {
 }
@@ -14,19 +17,25 @@ FrgWindow::~FrgWindow(void)
 LRESULT FrgWindow::OnCreate( UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& bhandled )
 {
   SetStyle();
-  SetTransparent(RGB(255, 0, 255));
+  SetTransparent(trans_color_);
 
   RECT rc;
-  rc.left = 100;
-  rc.top = 100;
-  rc.right = 150;
-  rc.bottom = 120;
-  button_.Create(m_hWnd, &rc, NULL, WS_CHILD | WS_VISIBLE);
+  rc.left = 300;
+  rc.top = 5;
+  rc.right = 320;
+  rc.bottom = 25;
+  button_.Create(m_hWnd, &rc, NULL, WS_CHILD | WS_VISIBLE, NULL, IDC_BUTTON_CLOSE);
 
-  HWND hparent = GetParent();
+  hparent_ = GetParent();
 
-  ::GetWindowRect(hparent, &rc);
+  ::GetWindowRect(hparent_, &rc);
   MoveWindow(&rc);
+
+
+  HICON htray_icon = (HICON)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MAINFRAME),
+      IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
+  tray_.Create(m_hWnd, IDC_TRAY, UM_TRAY, htray_icon, L"asdf");
+  tray_.SetBallonInfo(L"kjh", L"this is 32", 2*1000);
 
   return 0;
 }
@@ -49,7 +58,13 @@ LRESULT FrgWindow::OnEraseBkgnd( UINT umsg, WPARAM wparam, LPARAM lparam, BOOL& 
   CDCHandle dc((HDC)wparam);
   RECT rc;
   GetClientRect(&rc);
-  HBRUSH hbrush = CreateSolidBrush(RGB(255, 0, 255));
+  HBRUSH hbrush = CreateSolidBrush(trans_color_);
   dc.FillRect(&rc, hbrush);
   return 1;
+}
+
+LRESULT FrgWindow::OnButtonClose( WORD notify_code, WORD id, HWND hwnd_ctrl, BOOL& bhandled )
+{
+  ::PostMessage(hparent_, WM_CLOSE, NULL, NULL);
+  return 0;
 }
